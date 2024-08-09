@@ -1,0 +1,111 @@
+{% extends "partials/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>Sweet & Delicious</p>
+						<h1>Detail</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+
+<div class="single-product mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5">
+					<div class="single-product-img">
+						<img src="{{product.image.url}}" alt="">
+					</div>
+				</div>
+				<div class="col-md-7">
+					<div class="single-product-content">
+						<h1>{{product.name}}</h1>
+						<p class="single-product-pricing"><span>a scoop</span> ₦ {{product.price}}</p>
+						<p>{{product.description}}</p>
+						<div class="single-product-form">
+							<form action="index.html">
+								<input type="number" placeholder="0">
+							</form>
+                             {% if request.user == product.created_by %}
+                                 <a href="{% url 'core:update-product' product.id %}" type="button" class="btn btn-md btn-outline-success">Edit</a>
+                                 <a href="{% url 'core:delete' product.id %}" type="button" class="btn btn-md btn-outline-danger">Delete</a>
+
+                             <!-- otherwise -->
+                             {% else %}
+							<a href="{% url 'core:detail' product.id %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+							<p><strong>Categories: </strong>{{product.category}}</p>
+                            <br>
+                            <p><strong>Vendor: </strong>@{{product.created_by.username}}</p>
+
+                             <a href="{% url 'conversation:new' product.id %}" class="btn btn-secondary">Contact Seller</a>
+                             <button type="button" value="{{ product.id }}" class="btn btn-success" id="add-button">Add to Cart</button>
+
+                             <!-- end here -->
+                             {% endif %}
+						</div>
+						<h4>Share:</h4>
+						<ul class="product-share">
+							<li><a href=""><i class="fab fa-facebook-f"></i></a></li>
+							<li><a href=""><i class="fab fa-twitter"></i></a></li>
+							<li><a href=""><i class="fab fa-google-plus-g"></i></a></li>
+							<li><a href=""><i class="fab fa-linkedin"></i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end single product -->
+
+	<!-- more products -->
+	<div class="more-products mb-150">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="section-title">
+						<h3><span class="orange-text">Other </span> Deals </h3>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+
+				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 text-center">
+                          {% if related_products %}
+                    {% for product in related_products %}
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="single-product.html"><img src="{{product.image.url}}" alt=""></a>
+						</div>
+						<h3>{{product.name}}</h3>
+						<p class="product-price"><span>A Plate</span> ₦ {{product.price}} </p>
+                        {% if request.user == product.created_by %}
+                                 <a href="{% url 'core:detail' product.id %}" type="button" class="btn btn-sm btn-outline-secondary">View</a>
+                                <a href="" type="button" class="btn btn-sm btn-outline-success">Edit</a>
+                                 <a href="products delete' with pk" type="button" class="btn btn-sm btn-outline-danger">Delete</a>
+                                {% else %}
+						    <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                        {% endif %}
+					</div>
+     {% endfor %}
+{% else %}
+    <p>There are no related items for {{ product.category.name }} category</p>
+{% endif %}
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- end more products -->
+
+
+{% endblock content %}
